@@ -1,0 +1,15 @@
+/.vscode
+/.cache
+/ovmf
+/limine
+/symphony/limine.h
+/build
+/deps
+*.elf
+*.txt
+*.hdd
+*.iso
+*.o
+*.d
+kernel-deps
+compile_commands.json
