@@ -1,0 +1,45 @@
+#! /bin/sh
+
+set -e
+set -x
+
+if [ -z "$1" ] || [ -z "$2" ]; then
+  echo "Usage: $0 <target_architecture> <num_jobs>"
+  exit 1
+fi
+
+mkdir -p toolchain && mkdir -p toolchain/build
+rm -rf toolchain/gcc* toolchain/binutils*
+
+cd toolchain/
+
+export PREFIX="$(pwd)/build/$1"
+export TARGET="$1-elf"
+export PATH="$PREFIX/bin:$PATH"
+
+# Binutils
+
+wget https://ftp.gnu.org/gnu/binutils/binutils-2.41.tar.xz && tar xf binutils-2.41.tar.xz && rm -rf binutils-2.41.tar.xz
+mkdir binutils
+cd binutils 
+../binutils-2.41/configure --prefix=$PREFIX --target=$TARGET --disable-nls --disable-werror --disable-shared --with-sysroot
+make -j$2
+make install
+
+cd ..
+
+# GCC
+
+wget https://ftp.gnu.org/gnu/gcc/gcc-13.2.0/gcc-13.2.0.tar.xz && tar xf gcc-13.2.0.tar.xz && rm -rf gcc-13.2.0.tar.xz
+mkdir gcc
+
+cd gcc-13.2.0
+./contrib/download_prerequisites
+cd ..
+
+cd gcc 
+../gcc-13.2.0/configure --prefix=$PREFIX --target=$TARGET --disable-nls --enable-languages=c,c++ --without-headers --disable-multilib --disable-shared
+make all-gcc -j$2 
+make install-gcc
+make all-target-libgcc -j$2
+make install-target-libgcc

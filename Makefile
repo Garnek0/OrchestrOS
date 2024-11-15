@@ -90,33 +90,6 @@ run-hdd-riscv64: ovmf/ovmf-code-$(ARCH).fd orchestros.hdd
 		-hda orchestros.hdd \
 		$(QEMUFLAGS)
 
-.PHONY: run-loongarch64
-run-loongarch64: ovmf/ovmf-code-$(ARCH).fd orchestros.iso
-	qemu-system-$(ARCH) \
-		-M virt \
-		-cpu la464 \
-		-device ramfb \
-		-device qemu-xhci \
-		-device usb-kbd \
-		-device usb-mouse \
-		-drive if=pflash,unit=0,format=raw,file=ovmf/ovmf-code-$(ARCH).fd,readonly=on \
-		-cdrom orchestros.iso \
-		$(QEMUFLAGS)
-
-.PHONY: run-hdd-loongarch64
-run-hdd-loongarch64: ovmf/ovmf-code-$(ARCH).fd orchestros.hdd
-	qemu-system-$(ARCH) \
-		-M virt \
-		-cpu la464 \
-		-device ramfb \
-		-device qemu-xhci \
-		-device usb-kbd \
-		-device usb-mouse \
-		-drive if=pflash,unit=0,format=raw,file=ovmf/ovmf-code-$(ARCH).fd,readonly=on \
-		-hda orchestros.hdd \
-		$(QEMUFLAGS)
-
-
 .PHONY: run-bios
 run-bios: orchestros.iso
 	qemu-system-$(ARCH) \
@@ -150,7 +123,7 @@ symphony-deps:
 	touch symphony-deps
 
 .PHONY: symphony
-symphony: symphony-deps symphony
+symphony: symphony-deps
 	mkdir -p build
 	$(MAKE) -C symphony
 
@@ -189,15 +162,6 @@ ifeq ($(ARCH),riscv64)
 		-efi-boot-part --efi-boot-image --protective-msdos-label \
 		iso_root -o orchestros.iso
 endif
-ifeq ($(ARCH),loongarch64)
-	cp -v limine/limine-uefi-cd.bin iso_root/limine/
-	cp -v limine/BOOTLOONGARCH64.EFI iso_root/EFI/BOOT/
-	xorriso -as mkisofs -R -r -J \
-		-hfsplus -apm-block-size 2048 \
-		--efi-boot limine/limine-uefi-cd.bin \
-		-efi-boot-part --efi-boot-image --protective-msdos-label \
-		iso_root -o orchestros.iso
-endif
 	rm -rf iso_root
 
 orchestros.hdd: limine/limine symphony
@@ -222,9 +186,6 @@ endif
 ifeq ($(ARCH),riscv64)
 	mcopy -i orchestros.hdd@@1M limine/BOOTRISCV64.EFI ::/EFI/BOOT
 endif
-ifeq ($(ARCH),loongarch64)
-	mcopy -i orchestros.hdd@@1M limine/BOOTLOONGARCH64.EFI ::/EFI/BOOT
-endif
 
 .PHONY: clean
 clean:
@@ -233,5 +194,10 @@ clean:
 
 .PHONY: distclean
 distclean:
+	$(MAKE) -C symphony distclean
+	rm -rf iso_root *.iso *.hdd symphony-deps deps limine ovmf build toolchain
+
+.PHONY: distclean-keep-toolchain
+distclean-keep-toolchain:
 	$(MAKE) -C symphony distclean
 	rm -rf iso_root *.iso *.hdd symphony-deps deps limine ovmf build

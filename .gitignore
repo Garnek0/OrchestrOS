@@ -4,6 +4,7 @@
 /limine
 /symphony/limine.h
 /build
+/toolchain
 /deps
 *.elf
 *.txt
@@ -11,5 +12,5 @@
 *.iso
 *.o
 *.d
-kernel-deps
+symphony-deps
 compile_commands.json

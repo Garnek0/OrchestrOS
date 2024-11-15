@@ -10,18 +10,18 @@ override USER_VARIABLE = $(if $(filter $(origin $(1)),default undefined),$(eval 
 $(call USER_VARIABLE,ARCH,x86_64)
 
 # Check if the architecture is supported.
-ifeq ($(filter $(ARCH),aarch64 loongarch64 riscv64 x86_64),)
+ifeq ($(filter $(ARCH),aarch64 riscv64 x86_64),)
     $(error Architecture $(ARCH) not supported)
 endif
 
 # User controllable C compiler command.
-$(call USER_VARIABLE,CC,cc)
+$(call USER_VARIABLE,CC,../toolchain/build/$(ARCH)/bin/$(ARCH)-elf-gcc)
 
 # User controllable archiver command.
-$(call USER_VARIABLE,AR,ar)
+$(call USER_VARIABLE,AR,../toolchain/build/$(ARCH)/bin/$(ARCH)-elf-ar)
 
 # User controllable linker command.
-$(call USER_VARIABLE,LD,ld)
+$(call USER_VARIABLE,LD,../toolchain/build/$(ARCH)/bin/$(ARCH)-elf-ld)
 
 # User controllable C flags.
 $(call USER_VARIABLE,CFLAGS,-g -O2 -pipe)
@@ -123,18 +123,6 @@ ifeq ($(ARCH),riscv64)
         -m elf64lriscv \
         --no-relax
 endif
-ifeq ($(ARCH),loongarch64)
-    ifeq ($(CC_IS_CLANG),1)
-        override CC += \
-            -target loongarch64-unknown-none
-    endif
-    override CFLAGS += \
-        -march=loongarch64 \
-        -mabi=lp64s
-    override LDFLAGS += \
-        -m elf64loongarch \
-        --no-relax
-endif
 
 # Internal linker flags that should not be changed by the user.
 override LDFLAGS += \
@@ -166,8 +154,8 @@ all: ../build/$(ARCH)/symphony/$(OUTPUT)
 	rm -rf ../deps/cc-runtime-$(ARCH)
 	cp -r ../deps/cc-runtime ../deps/cc-runtime-$(ARCH)
 	$(MAKE) -C ../deps/cc-runtime-$(ARCH) -f cc-runtime.mk \
-		CC="$(CC)" \
-		AR="$(AR)" \
+		CC="../$(CC)" \
+		AR="../$(AR)" \
 		CFLAGS="$(CFLAGS)" \
 		CPPFLAGS='-isystem ../../deps/freestnd-c-hdrs-0bsd -DCC_RUNTIME_NO_FLOAT'
 
