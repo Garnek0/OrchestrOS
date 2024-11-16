@@ -134,11 +134,18 @@ override LDFLAGS += \
 
 # Use "find" to glob all *.c, *.S, and *.asm files in the tree and obtain the
 # object and header dependency file names.
-override CFILES := $(shell find -L * -type f -name '*.c' | LC_ALL=C sort)
-override ASFILES := $(shell find -L * -type f -name '*.S' | LC_ALL=C sort)
+override CFILES := $(shell find -L . -type f -name '*.c' -not -path "./arch/*" | LC_ALL=C sort)
+override ASFILES := $(shell find -L . -type f -name '*.S' -not -path "./arch/*" | LC_ALL=C sort)
 ifeq ($(ARCH),x86_64)
-override NASMFILES := $(shell find -L * -type f -name '*.asm' | LC_ALL=C sort)
+override NASMFILES := $(shell find -L . -type f -name '*.asm' -not -path "./arch/*" | LC_ALL=C sort)
 endif
+
+override CFILES += $(shell find -L ./arch/$(ARCH) -type f -name '*.c' | LC_ALL=C sort)
+override ASFILES += $(shell find -L ./arch/$(ARCH) -type f -name '*.S' | LC_ALL=C sort)
+ifeq ($(ARCH),x86_64)
+override NASMFILES += $(shell find -L ./arch/$(ARCH) -type f -name '*.asm' | LC_ALL=C sort)
+endif
+
 override OBJ := $(addprefix ../build/$(ARCH)/symphony/,$(CFILES:.c=.c.o) $(ASFILES:.S=.S.o))
 ifeq ($(ARCH),x86_64)
 override OBJ += $(addprefix ../build/$(ARCH)/symphony/,$(NASMFILES:.asm=.asm.o))

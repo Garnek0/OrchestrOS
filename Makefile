@@ -125,6 +125,7 @@ symphony-deps:
 .PHONY: symphony
 symphony: symphony-deps
 	mkdir -p build
+	ln -sfr ./include/arch/$(ARCH).h include/arch/arch.h
 	$(MAKE) -C symphony
 
 orchestros.iso: limine/limine symphony
