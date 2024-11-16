@@ -42,3 +42,6 @@ make run-hdd ARCH=aarch64
 
 # WARNING: Although the Makefile has specific run-* targets for non-x86 architectures, they are purely for the internal functioning of the build system and using them without specifying ARCH= will break stuff.
 ```
+
+### Cross-platform Support
+Although OrchestrOS can run on 3 different architectures (x86_64, aarch64 and riscv64), at this time I'm only focusing on x86_64. This means the OS might not work properly (or at all) on the other two architectures.

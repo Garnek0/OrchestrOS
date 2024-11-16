@@ -28,6 +28,7 @@ run-x86_64: ovmf/ovmf-code-$(ARCH).fd orchestros.iso
 		-M q35 \
 		-drive if=pflash,unit=0,format=raw,file=ovmf/ovmf-code-$(ARCH).fd,readonly=on \
 		-cdrom orchestros.iso \
+		-debugcon stdio \
 		$(QEMUFLAGS)
 
 .PHONY: run-hdd-x86_64
@@ -36,6 +37,7 @@ run-hdd-x86_64: ovmf/ovmf-code-$(ARCH).fd orchestros.hdd
 		-M q35 \
 		-drive if=pflash,unit=0,format=raw,file=ovmf/ovmf-code-$(ARCH).fd,readonly=on \
 		-hda orchestros.hdd \
+		-debugcon stdio \
 		$(QEMUFLAGS)
 
 .PHONY: run-aarch64
@@ -96,6 +98,7 @@ run-bios: orchestros.iso
 		-M q35 \
 		-cdrom orchestros.iso \
 		-boot d \
+		-debugcon stdio \
 		$(QEMUFLAGS)
 
 .PHONY: run-hdd-bios
@@ -103,6 +106,7 @@ run-hdd-bios: orchestros.hdd
 	qemu-system-$(ARCH) \
 		-M q35 \
 		-hda orchestros.hdd \
+		-debugcon stdio \
 		$(QEMUFLAGS)
 
 ovmf/ovmf-code-$(ARCH).fd:

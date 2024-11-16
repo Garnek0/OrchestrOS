@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: BSD-2-Clause
 
-#include <arch/arch.h>
+#include <arch/x86_64.h>
 
 void arch_halt(void) {
 	asm volatile("cli");
