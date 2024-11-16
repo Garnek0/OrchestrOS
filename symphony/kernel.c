@@ -21,22 +21,22 @@ static volatile LIMINE_REQUESTS_END_MARKER;
 void _start(void) {
 	debug_print("Symphony "KERNEL_VER_STRING" is starting...\n");
 
-    // Ensure the bootloader actually understands our Limine base revision (see spec).
-    if (LIMINE_BASE_REVISION_SUPPORTED == false) {
+	// Ensure the bootloader actually understands our Limine base revision (see spec).
+	if (LIMINE_BASE_REVISION_SUPPORTED == false) {
 		debug_print("Limine base revision not supported by the bootloader!\n");
-        arch_halt();
-    }
+		arch_halt();
+	}
 
 	fb_init();	
 
-    for (size_t i = 0; i < 100; i++) {
-        for (size_t j = 0; j < 100; j++) {
+	for (size_t i = 0; i < 100; i++) {
+		for (size_t j = 0; j < 100; j++) {
 			fb_set_pixel(i, j, 0xFFFFFFFF);
 		}
-    }
+	}
 
 	debug_print("Init done.\n");
 
-    // We're done, just hang...
-    arch_halt();
+	// We're done, just hang...
+	arch_halt();
 }
