@@ -3,7 +3,7 @@
 ![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white&color=orange)
 ![](https://tokei.rs/b1/github/garnek0/orchestros?type=c,c++,cheader,assembly,assemblyGAS,Rust&style=for-the-badge&color=orange)
 
-A simple, hobby OS.
+A simple, hobby operating system. This is a rewrite of my first OS that focuses on simplicity, portability and maintainability.
 
 ## Features
 - 64-bit OS
