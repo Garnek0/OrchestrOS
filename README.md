@@ -1,5 +1,8 @@
 # OrchestrOS
 
+![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white&color=orange)
+![](https://tokei.rs/b1/github/garnek0/orchestros?type=c,c++,cheader,assembly,assemblyGAS,Rust&style=for-the-badge&color=orange)
+
 A simple, hobby OS.
 
 ## Features
@@ -17,7 +20,7 @@ Replace `<num_jobs>` with the number of parallel jobs you want make to use when 
 
 It may take a while for the toolchain to build.
 
-### Building and Running
+### Building and Running OrchestrOS
 In the root directory, run either of the following commands:
 ```
 make all # Build the OS and create an ISO image (MIGHT NOT WORK PROPERLY)
