@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: BSD-2-Clause
 
+#include <kernel.h>
 #include <debug.h>
 #include <types.h>
 #include <fb.h>
@@ -18,7 +19,7 @@ static volatile LIMINE_REQUESTS_END_MARKER;
 
 // Kernel entry point
 void _start(void) {
-	debug_print("Symphony is starting...\n");
+	debug_print("Symphony "KERNEL_VER_STRING" is starting...\n");
 
     // Ensure the bootloader actually understands our Limine base revision (see spec).
     if (LIMINE_BASE_REVISION_SUPPORTED == false) {
@@ -33,6 +34,8 @@ void _start(void) {
 			fb_set_pixel(i, j, 0xFFFFFFFF);
 		}
     }
+
+	debug_print("Init done.\n");
 
     // We're done, just hang...
     arch_halt();
