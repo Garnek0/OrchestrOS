@@ -7,6 +7,8 @@
 /build
 /toolchain
 /deps
+/docs/html
+/docs/latex
 *.elf
 *.txt
 *.hdd

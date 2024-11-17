@@ -8,10 +8,10 @@
  * Various debug functions.
  */
 
-#include <debug.h>
-#include <string.h>
-#include <arch/arch.h>
-#include <serial.h>
+#include <symphony/debug.h>
+#include <symphony/string.h>
+#include <symphony/arch/arch.h>
+#include <symphony/serial.h>
 
 #define LEFT_ALIGN 1
 #define PLUS_FOR_POSITIVE (1 << 1)
@@ -24,6 +24,7 @@
 
 char debug_putchar(char chr) {
 #ifdef __x86_64__
+	// 0xE9 Port hack for x86 QEMU/Bochs.
 	arch_outb(0xE9, chr);
 #endif
 	serial_char(chr);
@@ -268,14 +269,49 @@ int debug_vprintf(const char* fmt, va_list args) {
 	return chars;
 }
 
-void debug_assert(int cond, const char* message, const char* func, const char* file, int line) {
+int debug_log(int loglevel, const char* fmt, ...) {
+	va_list args;
+	va_start(args, fmt);
+	int chars;
+
+	switch (loglevel) {
+		case LOGLEVEL_TRACE:
+			debug_print("[ TRACE ] ");
+			break;
+		case LOGLEVEL_DEBUG:
+			debug_print("[ DEBUG ] ");
+			break;
+		case LOGLEVEL_INFO:
+			debug_print("[ INFO  ] ");
+			break;
+		case LOGLEVEL_WARN:
+			debug_print("[ WARN  ] ");
+			break;
+		case LOGLEVEL_ERROR:
+			debug_print("[ ERROR ] ");
+			break;
+		case LOGLEVEL_FATAL:
+			debug_print("[ FATAL ] ");
+			break;
+		default:
+			debug_print("[ UNK ] ");
+			break;
+	}
+
+	chars = debug_vprintf(fmt, args);
+	va_end(args);
+
+	return chars;
+}
+
+void __debug_assert(int cond, const char* message, const char* func, const char* file, int line) {
 	if (!cond) {
-		debug_printf("FATAL assertion failed in %s (%s:%d): %s", func, file, line, message);
+		debug_log(LOGLEVEL_FATAL, "Assertion failed in %s (%s:%d): %s", func, file, line, message);
 		arch_halt();
 	}
 }
 
-void debug_assert_warn(int cond, const char* message, const char* func, const char* file, int line) {
+void __debug_assert_warn(int cond, const char* message, const char* func, const char* file, int line) {
 	if(!cond)
-		debug_printf("WARN assertion failed in %s (%s:%d): %s", func, file, line, message);
+		debug_log(LOGLEVEL_WARN, "Assertion failed in %s (%s:%d): %s", func, file, line, message);
 }

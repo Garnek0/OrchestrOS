@@ -126,10 +126,13 @@ symphony-deps:
 	./scripts/get-deps
 	touch symphony-deps
 
+symphony-docs:
+	cd docs && doxygen
+
 .PHONY: symphony
 symphony: symphony-deps
 	mkdir -p build
-	ln -sfr ./include/arch/$(ARCH).h include/arch/arch.h
+	ln -sfr ./include/symphony/arch/$(ARCH).h include/symphony/arch/arch.h
 	$(MAKE) -C symphony
 
 orchestros.iso: limine/limine symphony

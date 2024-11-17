@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: BSD-2-Clause
-/*
- * File: include/types.h
- * 
- * Authos(s): Popa Vlad (Garnek0)
+/**
+ * @file types.h
+ * @author Popa Vlad (Garnek0)
  *
- * Description:
- * Basic data types such as unitn_t, size_t etc.
+ * @brief
+ * Includes for basic data types such as uintn_t, size_t etc.
  */
 
 #pragma once

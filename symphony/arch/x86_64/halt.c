@@ -8,7 +8,7 @@
  * x86 halt function.
  */
 
-#include <arch/x86_64.h>
+#include <symphony/arch/x86_64.h>
 
 void arch_halt(void) {
 	asm volatile("cli");

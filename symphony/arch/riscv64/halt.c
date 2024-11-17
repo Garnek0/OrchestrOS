@@ -8,7 +8,7 @@
  * riscv64 halt function.
  */
 
-#include <arch/riscv64.h>
+#include <symphony/arch/riscv64.h>
 
 void arch_halt(void) {
 	asm volatile("csrci mstatus, 0x8");

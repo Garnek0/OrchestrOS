@@ -9,7 +9,7 @@
  */
 
 
-#include <arch/aarch64.h>
+#include <symphony/arch/aarch64.h>
 
 void arch_halt(void) {
 	asm volatile("msr daifset, 0xf");

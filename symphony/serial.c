@@ -9,8 +9,8 @@
  * of this driver is to allow for logging via the serial port.
  */
 
-#include <serial.h>
-#include <arch/arch.h>
+#include <symphony/serial.h>
+#include <symphony/arch/arch.h>
 
 #define COM_PORT 0x3F8
 
