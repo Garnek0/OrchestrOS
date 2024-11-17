@@ -42,8 +42,8 @@ static int debug_print_int(uintmax_t n, int flags, int width, int size, int base
 	int chars = 0;
 	bool negative = (((intmax_t)n < 0) && sign) ? true : false;
 
-	char digitsLower[] = "0123456789abcdef";
-	char digitsUpper[] = "0123456789ABCDEF";
+	const char digitsLower[] = "0123456789abcdef";
+	const char digitsUpper[] = "0123456789ABCDEF";
 
 	if (negative)
 		n = (uintmax_t)-((intmax_t)n);

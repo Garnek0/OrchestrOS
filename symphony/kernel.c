@@ -30,8 +30,6 @@ void _start(void) {
 	serial_init();
 	debug_printf("Symphony "KERNEL_VER_STRING" is starting...\n");
 
-	ASSERT(0, "TEST ASSERT\n");
-
 	// Ensure the bootloader actually understands our Limine base revision (see spec).
 	if (LIMINE_BASE_REVISION_SUPPORTED == false) {
 		debug_print("Kernel Limine protocol base revision not supported by the bootloader!\n");
