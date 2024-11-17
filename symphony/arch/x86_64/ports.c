@@ -1,4 +1,12 @@
 // SPDX-License-Identifier: BSD-2-Clause
+/*
+ * File: arch/x86_64/ports.c
+ * 
+ * Authos(s): Popa Vlad (Garnek0)
+ *
+ * Description:
+ * x86 port I/O helpers.
+ */
 
 #include <arch/x86_64.h>
 

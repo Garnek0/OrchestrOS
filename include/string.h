@@ -1,4 +1,12 @@
 // SPDX-License-Identifier: BSD-2-Clause
+/*
+ * File: include/string.h
+ * 
+ * Authos(s): Popa Vlad (Garnek0)
+ *
+ * Description:
+ * libc-like string and memory functions.
+ */
 
 #pragma once
 

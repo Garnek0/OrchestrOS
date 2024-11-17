@@ -1,4 +1,12 @@
 // SPDX-License-Identifier: BSD-2-Clause
+/*
+ * File: include/arch/x86_64.h
+ * 
+ * Authos(s): Popa Vlad (Garnek0)
+ *
+ * Description:
+ * x86_64 arch-specific interface.
+ */
 
 #pragma once
 

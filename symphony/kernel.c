@@ -1,9 +1,17 @@
 // SPDX-License-Identifier: BSD-2-Clause
+/*
+ * File: kernel.c
+ * 
+ * Authos(s): Popa Vlad (Garnek0)
+ *
+ * Description:
+ * Kernel entry point and initialization stuff.
+ */
 
 #include <kernel.h>
 #include <debug.h>
+#include <serial.h>
 #include <types.h>
-#include <fb.h>
 #include <limine.h>
 #include <arch/arch.h>
 
@@ -19,24 +27,18 @@ static volatile LIMINE_REQUESTS_END_MARKER;
 
 // Kernel entry point
 void _start(void) {
-	debug_print("Symphony "KERNEL_VER_STRING" is starting...\n");
+	serial_init();
+	debug_printf("Symphony "KERNEL_VER_STRING" is starting...\n");
+
+	ASSERT(0, "TEST ASSERT\n");
 
 	// Ensure the bootloader actually understands our Limine base revision (see spec).
 	if (LIMINE_BASE_REVISION_SUPPORTED == false) {
-		debug_print("Limine base revision not supported by the bootloader!\n");
+		debug_print("Kernel Limine protocol base revision not supported by the bootloader!\n");
 		arch_halt();
-	}
+	}	
 
-	fb_init();	
+	debug_printf("Init done.\n");
 
-	for (size_t i = 0; i < 100; i++) {
-		for (size_t j = 0; j < 100; j++) {
-			fb_set_pixel(i, j, 0xFFFFFFFF);
-		}
-	}
-
-	debug_print("Init done.\n");
-
-	// We're done, just hang...
 	arch_halt();
 }
