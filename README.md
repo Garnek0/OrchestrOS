@@ -44,4 +44,4 @@ make run-hdd ARCH=aarch64
 ```
 
 ### Cross-platform Support
-Although OrchestrOS can run on 3 different architectures (x86_64, aarch64 and riscv64), at this time I'm only focusing on x86_64. This means the OS might not work properly (or at all) on the other two architectures.
+Even though the targets for non-x86 architectures exist, OrchestrOS will most likely not work properly if ran on anything other than an x86 PC (emulated or not). At this time, i'm only focusing on writing the base features of the OS. After those are done, i'll start working on cross-platform support.
