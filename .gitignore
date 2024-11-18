@@ -3,7 +3,7 @@
 /ovmf
 /limine
 /symphony/limine.h
-/include/arch/arch.h
+/include/symphony/arch/arch.h
 /build
 /toolchain
 /deps

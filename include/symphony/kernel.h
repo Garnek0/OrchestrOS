@@ -1,7 +1,7 @@
-// SPDX-License-Identifier: BSD-2-Clause
 /**
  * @file kernel.h
  * @author Popa Vlad (Garnek0)
+ * @copyright BSD-2-Clause
  *
  * @brief
  * Info about the kernel (such as the kernel version).

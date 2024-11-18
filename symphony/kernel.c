@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: BSD-2-Clause
 /*
  * File: kernel.c
  * 
  * Authos(s): Popa Vlad (Garnek0)
+ *
+ * Copyright: BSD-2-Clause
  *
  * Description:
  * Kernel entry point and initialization stuff.

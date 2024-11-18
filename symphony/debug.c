@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: BSD-2-Clause
 /*
  * File: debug.c
  * 
  * Authos(s): Popa Vlad (Garnek0)
+ *
+ * Copyright: BSD-2-Clause
  *
  * Description:
  * Various debug functions.
@@ -65,24 +66,19 @@ static int debug_print_int(uintmax_t n, int flags, int width, int size, int base
 	if (negative) {
 		debug_putchar('-');
 		chars++;
-		width--;
 	} else {
 		if (flags & PLUS_FOR_POSITIVE) {
 			debug_putchar('+');
 			chars++;
-			width--;
 		} else if (flags & SPACE_FOR_POSITIVE) {
 			debug_putchar(' ');
 			chars++;
-			width--;
 		}
 	}
 
 	if (base == 8 && (flags & SPECIAL_HASH)) {
-		width -= 1;	
 		debug_putchar('0');
 	} else if (base == 16 && (flags & SPECIAL_HASH)) {
-		width -= 2;
 		debug_putchar('0');
 		if (upper)
 			debug_putchar('X');
@@ -302,6 +298,20 @@ int debug_log(int loglevel, const char* fmt, ...) {
 	va_end(args);
 
 	return chars;
+}
+
+void debug_panic(const char* fmt, ...) {
+	va_list args;
+	va_start(args, fmt);
+
+	debug_log(LOGLEVEL_FATAL, "Kernel Panic! ");
+	debug_vprintf(fmt, args);
+
+	va_end(args);
+
+	arch_halt();
+
+	__builtin_unreachable();
 }
 
 void __debug_assert(int cond, const char* message, const char* func, const char* file, int line) {

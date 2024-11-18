@@ -1,7 +1,7 @@
-// SPDX-License-Identifier: BSD-2-Clause
 /**
  * @file serial.h
  * @author Popa Vlad (Garnek0)
+ * @copyright BSD-2-Clause
  *
  * @brief
  * Serial driver interface.

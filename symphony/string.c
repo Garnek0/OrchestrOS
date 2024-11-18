@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: BSD-2-Clause
 /*
  * File: string.c
  * 
  * Authos(s): Popa Vlad (Garnek0)
+ *
+ * Copyright: BSD-2-Clause
  *
  * Description:
  * Implementations of various memory- and string-related functions from the 

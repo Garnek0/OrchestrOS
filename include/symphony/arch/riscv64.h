@@ -1,7 +1,7 @@
-// SPDX-License-Identifier: BSD-2-Clause
 /**
  * @file arch/riscv64.h
  * @author Popa Vlad (Garnek0)
+ * @copyright BSD-2-Clause
  *
  * @brief
  * riscv64 arch-specific interface.

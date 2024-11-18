@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: BSD-2-Clause
 /*
  * File: arch/aarch64/halt.c
  * 
  * Authos(s): Popa Vlad (Garnek0)
+ *
+ * Copyright: BSD-2-Clause
  *
  * Description:
  * aarch64 halt function.

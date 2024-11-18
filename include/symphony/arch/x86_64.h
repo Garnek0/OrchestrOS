@@ -1,7 +1,7 @@
-// SPDX-License-Identifier: BSD-2-Clause
 /**
  * @file arch/x86_64.h
  * @author Popa Vlad (Garnek0)
+ * @copyright BSD-2-Clause
  *
  * @brief
  * x86_64 arch-specific interface.
@@ -16,7 +16,7 @@
  * @brief Write byte value to x86 I/O port.
  *
  * @param port Port
- * @param data Byte value to be written
+ * @param data Byte value to write
  */
 void arch_outb(uint32_t port, uint8_t data);
 
@@ -33,7 +33,7 @@ uint8_t arch_inb(uint32_t port);
  * @brief Write word value to x86 I/O port.
  *
  * @param port Port
- * @param data Word value to be written
+ * @param data Word value to write
  */
 void arch_outw(uint32_t port, uint16_t data);
 
@@ -50,7 +50,7 @@ uint16_t arch_inw(uint32_t port);
  * @brief Write long value to x86 I/O port.
  *
  * @param port Port
- * @param data Long value to be written
+ * @param data Long value to write
  */
 void arch_outl(uint32_t port, uint32_t data);
 

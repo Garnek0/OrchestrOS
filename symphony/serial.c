@@ -1,8 +1,9 @@
-// SPDX-License-Identifier: BSD-2-Clause
 /*
  * File: serial.c
  * 
  * Authos(s): Popa Vlad (Garnek0)
+ *
+ * Copyright: BSD-2-Clause
  *
  * Description:
  * Simple serial driver for the x86 PC rs232 serial interface. The only purpose

@@ -1,7 +1,7 @@
-// SPDX-License-Identifier: BSD-2-Clause
 /**
  * @file arch/aarch64.h
  * @author Popa Vlad (Garnek0)
+ * @copyright BSD-2-Clause
  *
  * @brief
  * AArch64 arch-specific interface.
