@@ -18,7 +18,7 @@
  * @param src Source
  * @param n Chunk size in bytes
  */
-void *memcpy(void *dest, const void *src, size_t n);
+void* memcpy(void *dest, const void *src, size_t n);
 
 /**
  * @brief Set all bytes in a chunk of memory to a specific value.
@@ -27,7 +27,7 @@ void *memcpy(void *dest, const void *src, size_t n);
  * @param c Value
  * @param n Chunk size in bytes
  */
-void *memset(void *s, int c, size_t n);
+void* memset(void *s, int c, size_t n);
 
 /**
  * @brief Move a chunk of memory.
@@ -36,7 +36,7 @@ void *memset(void *s, int c, size_t n);
  * @param src Source
  * @param n Chunk size in bytes
  */
-void *memmove(void *dest, const void *src, size_t n);
+void* memmove(void *dest, const void *src, size_t n);
 
 /**
  * @brief Compare two chunks of memory.

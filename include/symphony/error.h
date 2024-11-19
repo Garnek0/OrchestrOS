@@ -11,6 +11,8 @@
 
 #include <symphony/types.h>
 
+/**@{*/
+/** @brief Error code. */
 #define	EPERM 1		/* Not super-user */
 #define	ENOENT 2	/* No such file or directory */
 #define	ESRCH 3		/* No such process */
@@ -134,23 +136,59 @@
 #define EILSEQ 138
 #define EOVERFLOW 139	/* Value too large for defined data type */
 #define EWOULDBLOCK EAGAIN	/* Operation would block */
+/**@}*/
 
+/**
+ * @brief Max error code value.
+ */
 #define MAX_ERRNO 4095
 
+/**
+ * @brief Check if x contains an error value. 
+ */
 #define IS_ERR_VALUE(x) ((uint64_t)(void*)(x) >= (uint64_t)-MAX_ERRNO)
 
+/**
+ * @brief Encode error value into pointer.
+ *
+ * @param errno Error value to encode
+ *
+ * @return void pointer with the encoded error value
+ */
 static inline void* ERR_PTR(int64_t errno) {
 	return (void*)errno;
 }
 
+/**
+ * @brief Get encoded error value from pointer.
+ *
+ * @param ptr Pointer with encoded error value
+ *
+ * @return Decoded error value
+ */
 static inline int64_t PTR_ERR(void* ptr) {
 	return (int64_t)ptr;
 }
 
+/**
+ * @brief Check if a pointer contains an encoded error value.
+ *
+ * @param ptr The pointer
+ *
+ * @return true if the pointer contains an encoded error value, false otherwise
+ */
 static inline bool IS_ERR(void* ptr) {
 	return IS_ERR_VALUE((uint64_t)ptr);
 }
 
+/**
+ * @brief Check if a pointer is NULL or contains an encoded error value.
+ *
+ * @param ptr The pointer
+ *
+ * @return true if the pointer is NULL or contains an encoded error value,
+ * false otherwise
+ */
 static inline bool IS_ERR_OR_NULL(void* ptr) {
 	return !ptr || IS_ERR_VALUE((uint64_t)ptr);
 }

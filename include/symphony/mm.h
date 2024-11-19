@@ -11,4 +11,9 @@
 
 #include <symphony/types.h>
 
+/**
+ * @brief Initialize physical memory manager.
+ *
+ * @return 0 on success, negative error value on error.
+ */
 int pmm_init(void);
