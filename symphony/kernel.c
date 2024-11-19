@@ -9,12 +9,13 @@
  * Kernel entry point and initialization stuff.
  */
 
+#include <limine.h>
 #include <symphony/kernel.h>
 #include <symphony/debug.h>
 #include <symphony/serial.h>
 #include <symphony/types.h>
-#include <limine.h>
 #include <symphony/arch/arch.h>
+#include <symphony/mm.h>
 
 __attribute__((used, section(".limine_requests_start")))
 static volatile LIMINE_REQUESTS_START_MARKER;
@@ -36,6 +37,8 @@ void _start(void) {
 		debug_log(LOGLEVEL_FATAL, "Kernel Limine protocol base revision not supported by the bootloader!\n");
 		arch_halt();
 	}
+
+	pmm_init();	
 
 	debug_printf("Init done.\n");
 
