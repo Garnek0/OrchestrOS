@@ -100,7 +100,7 @@ static int debug_print_int(uintmax_t n, int flags, int width, int size, int base
 		}
 	}
 
-	for (int i = 0; i < dcount; i++){
+	for (int i = 0; i < dcount; i++) {
 		if (upper)
 			debug_putchar(digitsUpper[revn % base]);
 		else 
@@ -322,6 +322,6 @@ void __debug_assert(int cond, const char* message, const char* func, const char*
 }
 
 void __debug_assert_warn(int cond, const char* message, const char* func, const char* file, int line) {
-	if(!cond)
+	if (!cond)
 		debug_log(LOGLEVEL_WARN, "Assertion failed in %s (%s:%d): %s", func, file, line, message);
 }

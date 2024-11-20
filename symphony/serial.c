@@ -41,12 +41,12 @@ int serial_init(void) {
 
 char serial_char(char chr) {
 #ifdef __x86_64__
-	while((arch_inb(COM_LINE_STATUS) & 0x20) == 0)
+	while ((arch_inb(COM_LINE_STATUS) & 0x20) == 0)
 		continue;
 	
 	arch_outb(COM_DATA, chr);
 
-	if(chr == '\n')
+	if (chr == '\n')
 		serial_char('\r');
 #endif
 

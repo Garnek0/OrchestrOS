@@ -9,33 +9,43 @@
  * Kernel entry point and initialization stuff.
  */
 
-#include <limine.h>
 #include <symphony/kernel.h>
 #include <symphony/debug.h>
 #include <symphony/serial.h>
 #include <symphony/types.h>
 #include <symphony/arch/arch.h>
 #include <symphony/mm.h>
-
-__attribute__((used, section(".limine_requests_start")))
-static volatile LIMINE_REQUESTS_START_MARKER;
-
-// Set the Limine protocol base revision to 3.
-__attribute__((used, section(".limine_requests")))
-static volatile LIMINE_BASE_REVISION(3);
-
-__attribute__((used, section(".limine_requests_end")))
-static volatile LIMINE_REQUESTS_END_MARKER;
+#include <symphony/boot_proto.h>
 
 // Kernel entry point
 void _start(void) {
 	serial_init();
-	debug_printf("Symphony "KERNEL_VER_STRING" is starting...\n");
 
-	// Ensure the bootloader actually understands our Limine base revision (see spec).
-	if (LIMINE_BASE_REVISION_SUPPORTED == false) {
-		debug_log(LOGLEVEL_FATAL, "Kernel Limine protocol base revision not supported by the bootloader!\n");
-		arch_halt();
+	debug_printf("Symphony "KERNEL_VER_STRING" is starting...\n");	
+
+	if (!boot_proto_bl_supported())
+		debug_panic("Bootloader not supported!\n");
+
+	debug_log(LOGLEVEL_INFO, "Fetching Limine-compliant bootloader info...\n");
+	debug_log(LOGLEVEL_INFO, "Bootloader name: %s\n", boot_proto_bl_name());
+	debug_log(LOGLEVEL_INFO, "Bootloader version: %s\n", boot_proto_bl_version());
+	debug_log(LOGLEVEL_INFO, "Done fetching bootloader info.\n");
+
+	debug_log(LOGLEVEL_INFO, "System firmware: ");
+
+	switch (boot_proto_firmware_type()) {
+		case BOOT_PROTO_FW_X86BIOS:
+			debug_print("x86 BIOS\n");
+			break;
+		case BOOT_PROTO_FW_UEFI32:
+			debug_print("32-bit UEFI\n");
+			break;
+		case BOOT_PROTO_FW_UEFI64:
+			debug_print("64-bit UEFI\n");
+			break;
+		default:
+			debug_print("Unknown firmware\n");
+			break;
 	}
 
 	pmm_init();	
