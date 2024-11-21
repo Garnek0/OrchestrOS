@@ -21,6 +21,17 @@
 #define THOUSANDS_GROUPING (1 << 4)
 #define SPECIAL_HASH (1 << 5)
 
+#define LENGTH_NONE 0
+#define LENGTH_INT 1
+#define LENGTH_LONG 2
+#define LENGTH_LONG_LONG 3
+#define LENGTH_SIZE 4
+#define LENGTH_INTMAX 5
+#define LENGTH_PTRDIFF 6
+#define LENGTH_PTR 7
+
+#define MAX_WIDTH 256
+
 #define IS_DIGIT(c) ((c) >= '0' && (c) <= '9') 
 
 char debug_putchar(char chr) {
@@ -47,14 +58,14 @@ static int debug_print_int(uintmax_t n, int flags, int width, int size, int base
 	const char digitsLower[] = "0123456789abcdef";
 	const char digitsUpper[] = "0123456789ABCDEF";
 
+	uintmax_t revn = 0;	
+	int dcount = 0;
+
 	if (negative)
 		n = (uintmax_t)-((intmax_t)n);
 
 	if (base > 16)
 		return 0;
-
-	uintmax_t revn = 0;
-	int dcount = 0;
 
 	do {
 		dcount++;
@@ -146,6 +157,9 @@ int debug_vprintf(const char* fmt, va_list args) {
 	int flags, prevflags;
 	int width;
 	int size;
+	int length;
+
+	uintmax_t value;
 
 	for (size_t i = 0; i < strlen(fmt); i++) {
 		if (fmt[i] != '%') {
@@ -192,70 +206,138 @@ int debug_vprintf(const char* fmt, va_list args) {
 			i++;
 		}
 
-		size = 0;
+		if (width > MAX_WIDTH)
+			width = MAX_WIDTH;
 
+		size = 0;
+		length = 0;
+
+		// Get the length
 		switch (fmt[i]) {
 			case 'h':
 				size = sizeof(int);
 				if(fmt[i+1] == 'h')
 					i++;
+				length = LENGTH_INT;
+				i++;
 				break;
 			case 'l':
 				if(fmt[i+1] == 'l') {
 					size = sizeof(long long);
+					length = LENGTH_LONG_LONG;
 					i++;
 				} else {
 					size = sizeof(long);
+					length = LENGTH_LONG;
 				}
+				i++;
 				break;
 			case 'z':
 				size = sizeof(size_t);
+				length = LENGTH_SIZE;
+				i++;
 				break;
 			case 'j':
 				size = sizeof(intmax_t);
+				length = LENGTH_INTMAX;
+				i++;
 				break;
 			case 't':
 				size = sizeof(ptrdiff_t);
+				length = LENGTH_PTRDIFF;
+				i++;
+				break;
+			default:
+				if (fmt[i] == 'p' || fmt[i] == 's') {
+					size = sizeof(void*);
+					length = LENGTH_PTR;
+				} else {
+					size = sizeof(int);
+					length = LENGTH_INT;
+				}
+				break;
+		}
+
+		value = 0;
+
+		// Get the value
+		switch (fmt[i]) {
+			case 'd':
+			case 'i':
+				if (length == LENGTH_INT)
+					value = (uintmax_t)((int)va_arg(args, int));
+				else if (length == LENGTH_LONG)
+					value = (uintmax_t)((long)va_arg(args, long));
+				else if (length == LENGTH_LONG_LONG)
+					value = (uintmax_t)((long long)va_arg(args, long long));
+				else if (length == LENGTH_SIZE)
+					value = (uintmax_t)((size_t)va_arg(args, size_t));
+				else if (length == LENGTH_INTMAX)
+					value = (uintmax_t)((intmax_t)va_arg(args, intmax_t));
+				else if (length == LENGTH_PTRDIFF)
+					value = (uintmax_t)((ptrdiff_t)va_arg(args, ptrdiff_t));
+				break;
+			case 'u':
+			case 'x':
+			case 'X':
+			case 'o':
+			case 'c':
+				if (length == LENGTH_INT)
+					value = (uintmax_t)((unsigned int)va_arg(args, unsigned int));
+				else if (length == LENGTH_LONG)
+					value = (uintmax_t)((unsigned long)va_arg(args, unsigned long));
+				else if (length == LENGTH_LONG_LONG)
+					value = (uintmax_t)((unsigned long long)va_arg(args, unsigned long long));
+				else if (length == LENGTH_SIZE)
+					value = (uintmax_t)((size_t)va_arg(args, size_t));
+				else if (length == LENGTH_INTMAX)
+					value = (uintmax_t)((uintmax_t)va_arg(args, uintmax_t));
+				else if (length == LENGTH_PTRDIFF)
+					value = (uintmax_t)((ptrdiff_t)va_arg(args, ptrdiff_t));
+				break;
+			case 'p':
+				value = (uintmax_t)((void*)va_arg(args, void*));
+				break;
+			case 's':
+				value = (uintmax_t)((const char*)va_arg(args, const char*));
 				break;
 			default:
 				break;
 		}
 
-		if (size)
-			i++;
-		else 
-			size = sizeof(int);
-
+		// Do the printing
 		switch (fmt[i]) {
 			case '%':
 				chars += debug_putchar('%');
 				break;
 			case 'd':
 			case 'i':
-				chars += debug_print_int((uintmax_t)va_arg(args, int), flags, width, size, 10, true, false);
+				chars += debug_print_int((intmax_t)value, flags, width, size, 10, true, false);
 				break;
 			case 'u':
-				chars += debug_print_int((uintmax_t)va_arg(args, int), flags, width, size, 10, false, false);
+				chars += debug_print_int(value, flags, width, size, 10, false, false);
 				break;
 			case 'x':
-				chars += debug_print_int((uintmax_t)va_arg(args, int), flags, width, size, 16, false, false);
+				chars += debug_print_int(value, flags, width, size, 16, false, false);
+				break;
+			case 'X':
+				chars += debug_print_int(value, flags, width, size, 16, false, true);
 				break;
 			case 'p':
-			case 'X':
-				chars += debug_print_int((uintmax_t)va_arg(args, int), flags, width, size, 16, false, true);
+				chars += debug_print_int(value, flags, width, size, 16, false, true);
 				break;
 			case 'o':
-				chars += debug_print_int((uintmax_t)va_arg(args, int), flags, width, size, 8, false, false);
+				chars += debug_print_int(value, flags, width, size, 8, false, false);
 				break;
 			case 's':
-				chars += debug_print((const char*)va_arg(args, const char*));
+				if(!value)
+					chars += debug_print("(null)");
+				else
+					chars += debug_print((const char*)value);
 				break;
 			case 'c':
 				chars += 1;
-				debug_putchar((char)va_arg(args, int));
-				break;
-			case 'n':
-				*va_arg(args, int*) = chars;
+				debug_putchar((char)value);
 				break;
 			default:	
 				break;
