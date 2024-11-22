@@ -51,7 +51,7 @@ int debug_print(const char* str) {
 	return strlen(str);
 }
 
-static int debug_print_int(uintmax_t n, int flags, int width, int size, int base, bool sign, bool upper) {
+static int debug_print_int(uintmax_t n, int flags, int width, int base, bool sign, bool upper) {
 	int chars = 0;
 	bool negative = (((intmax_t)n < 0) && sign) ? true : false;
 
@@ -135,8 +135,6 @@ static int debug_print_int(uintmax_t n, int flags, int width, int size, int base
 		}
 	}
 
-	(void)size; // size unused, for now at least
-
 	return chars;
 }
 
@@ -156,7 +154,6 @@ int debug_vprintf(const char* fmt, va_list args) {
 
 	int flags, prevflags;
 	int width;
-	int size;
 	int length;
 
 	uintmax_t value;
@@ -209,13 +206,11 @@ int debug_vprintf(const char* fmt, va_list args) {
 		if (width > MAX_WIDTH)
 			width = MAX_WIDTH;
 
-		size = 0;
 		length = 0;
 
 		// Get the length
 		switch (fmt[i]) {
 			case 'h':
-				size = sizeof(int);
 				if(fmt[i+1] == 'h')
 					i++;
 				length = LENGTH_INT;
@@ -223,38 +218,30 @@ int debug_vprintf(const char* fmt, va_list args) {
 				break;
 			case 'l':
 				if(fmt[i+1] == 'l') {
-					size = sizeof(long long);
 					length = LENGTH_LONG_LONG;
 					i++;
 				} else {
-					size = sizeof(long);
 					length = LENGTH_LONG;
 				}
 				i++;
 				break;
 			case 'z':
-				size = sizeof(size_t);
 				length = LENGTH_SIZE;
 				i++;
 				break;
 			case 'j':
-				size = sizeof(intmax_t);
 				length = LENGTH_INTMAX;
 				i++;
 				break;
 			case 't':
-				size = sizeof(ptrdiff_t);
 				length = LENGTH_PTRDIFF;
 				i++;
 				break;
 			default:
-				if (fmt[i] == 'p' || fmt[i] == 's') {
-					size = sizeof(void*);
+				if (fmt[i] == 'p' || fmt[i] == 's')
 					length = LENGTH_PTR;
-				} else {
-					size = sizeof(int);
+				else 
 					length = LENGTH_INT;
-				}
 				break;
 		}
 
@@ -312,22 +299,22 @@ int debug_vprintf(const char* fmt, va_list args) {
 				break;
 			case 'd':
 			case 'i':
-				chars += debug_print_int((intmax_t)value, flags, width, size, 10, true, false);
+				chars += debug_print_int((intmax_t)value, flags, width, 10, true, false);
 				break;
 			case 'u':
-				chars += debug_print_int(value, flags, width, size, 10, false, false);
+				chars += debug_print_int(value, flags, width, 10, false, false);
 				break;
 			case 'x':
-				chars += debug_print_int(value, flags, width, size, 16, false, false);
+				chars += debug_print_int(value, flags, width, 16, false, false);
 				break;
 			case 'X':
-				chars += debug_print_int(value, flags, width, size, 16, false, true);
+				chars += debug_print_int(value, flags, width, 16, false, true);
 				break;
 			case 'p':
-				chars += debug_print_int(value, flags, width, size, 16, false, true);
+				chars += debug_print_int(value, flags, width, 16, false, true);
 				break;
 			case 'o':
-				chars += debug_print_int(value, flags, width, size, 8, false, false);
+				chars += debug_print_int(value, flags, width, 8, false, false);
 				break;
 			case 's':
 				if(!value)
