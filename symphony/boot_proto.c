@@ -100,7 +100,7 @@ struct boot_proto_memmap_entry boot_proto_memmap_entry_get(uint64_t i) {
 
 	assert(i < memoryMapRequest.response->entry_count, "index greater than the memmap entry count!\n");
 
-	// Memory map entry as provided by the bootloader
+	// Memory map entry provided by the bootloader
 	struct limine_memmap_entry* blMemmapEntry = memoryMapRequest.response->entries[i];
 
 	entry.base = blMemmapEntry->base;
@@ -132,7 +132,7 @@ struct boot_proto_memmap_entry boot_proto_memmap_entry_get(uint64_t i) {
 			entry.type = BOOT_PROTO_MEMMAP_FRAMEBUFFER;
 			break;
 		default:
-			entry.type = BOOT_PROTO_MEMMAP_BAD_MEMORY;
+			entry.type = BOOT_PROTO_MEMMAP_UNKNOWN;
 			break;
 	}
 
@@ -141,6 +141,9 @@ struct boot_proto_memmap_entry boot_proto_memmap_entry_get(uint64_t i) {
 
 const char* boot_proto_memmap_type_to_str(uint64_t type) {
 	switch (type) {
+		case BOOT_PROTO_MEMMAP_UNKNOWN:
+			return "Unknown";
+			break;
 		case BOOT_PROTO_MEMMAP_USABLE:
 			return "Usable";
 			break;
@@ -165,7 +168,7 @@ const char* boot_proto_memmap_type_to_str(uint64_t type) {
 		case BOOT_PROTO_MEMMAP_FRAMEBUFFER:
 			return "Framebuffer";
 		default:
-			return "Bad Memory (Unknown)";
+			return "Undefined Type";
 	}
 }
 
