@@ -48,6 +48,18 @@ void _start(void) {
 			break;
 	}
 
+	debug_log(LOGLEVEL_INFO, "HHDM offset: %#llx\n", boot_proto_hhdm_offset());
+	debug_log(LOGLEVEL_INFO, "Kernel physical base: %#llx\n", boot_proto_kernel_physical_base());
+	debug_log(LOGLEVEL_INFO, "Kernel virtual base: %#llx\n", boot_proto_kernel_virtual_base());
+
+	struct boot_proto_memmap_entry entry;
+	for (uint64_t i = 0; i < boot_proto_memmap_entry_count(); i++) {
+		entry = boot_proto_memmap_entry_get(i);
+		
+		debug_log(LOGLEVEL_INFO, "memmap entry: %#llx->%#llx %s\n", entry.base, entry.base+entry.length, 
+			   boot_proto_memmap_type_to_str(entry.type));
+	}
+
 	pmm_init();	
 
 	debug_printf("Init done.\n");

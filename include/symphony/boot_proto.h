@@ -4,7 +4,16 @@
  * @copyright BSD-2-Clause
  * 
  * @brief
- * Limine boot protocol abstraction layer.
+ * Boot protocol abstraction layer.
+ *
+ * @details
+ * Boot protocol abstraction layer. Most of the definitions in here coincide
+ * with the stuff in "limine.h". This is because i did not want the kernel to
+ * use those things directly, since it should not care about how the boot
+ * protocol itself works (That is the job of this boot protocol abstraction
+ * layer). This also means that if I ever decide to change the boot protocol
+ * for whatever reason, it would simply be a matter of implementing all the
+ * functions declared in here.
  */
 
 #pragma once
@@ -18,6 +27,30 @@
 #define BOOT_PROTO_FW_UEFI32 2
 #define BOOT_PROTO_FW_UEFI64 3
 /**@}*/
+
+/**@{*/
+/** @brief Memory map entry types. */
+#define BOOT_PROTO_MEMMAP_USABLE 0
+#define BOOT_PROTO_MEMMAP_RESERVED 1
+#define BOOT_PROTO_MEMMAP_ACPI_RECLAIMABLE 2
+#define BOOT_PROTO_MEMMAP_ACPI_NVS 3
+#define BOOT_PROTO_MEMMAP_BAD_MEMORY 4
+#define BOOT_PROTO_MEMMAP_BOOTLOADER_RECLAIMABLE 5
+#define BOOT_PROTO_MEMMAP_KERNEL_AND_MODULES 6
+#define BOOT_PROTO_MEMMAP_FRAMEBUFFER 7
+/**@}*/
+
+/** @brief Memory map entry structure. */
+struct boot_proto_memmap_entry {
+	/** @brief Base physical address of this memory map entry */
+	uint64_t base;
+
+	/** @brief Length of this memory map entry in bytes */
+	uint64_t length;
+
+	/** @brief Memory map entry type. */
+	uint64_t type;
+};
 
 /**
  * @brief Check if the current bootloader is supported.
@@ -47,3 +80,51 @@ char* boot_proto_bl_version(void);
  * type macros are defined in this file (boot_proto.h)
  */
 uint64_t boot_proto_firmware_type(void);
+
+/**
+ * @brief Get Higher Half Direct Map (HHDM) offset.
+ *
+ * @return HHDM offset
+ */
+uint64_t boot_proto_hhdm_offset(void);
+
+/**
+ * @brief Get memory map entry count.
+ *
+ * @return The number of memory map entries
+ */
+uint64_t boot_proto_memmap_entry_count(void);
+
+/**
+ * @brief Get memory map entry.
+ *
+ * @param i Memory map entry index. If i is out of bounds, a kernel panic
+ * will be triggered.
+ *
+ * @return boot_proto_memmap_entry structure containing the base address, 
+ * length and type of the memory map entry
+ */
+struct boot_proto_memmap_entry boot_proto_memmap_entry_get(uint64_t i);
+
+/**
+ * @brief Get human-readable ASCII string from memory map entry type.
+ *
+ * @param type The memory map entry type as a 64-bit integer
+ *
+ * @return Human-readable ASCII string of the memory map entry type.
+ */
+const char* boot_proto_memmap_type_to_str(uint64_t type);
+
+/**
+ * @brief Get kernel physical base address.
+ *
+ * @return Kernel physical base address
+ */
+uint64_t boot_proto_kernel_physical_base(void);
+
+/**
+ * @brief Get kernel virtual base address.
+ *
+ * @return Kernel virtual base address
+ */
+uint64_t boot_proto_kernel_virtual_base(void);
