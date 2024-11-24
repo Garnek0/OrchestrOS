@@ -143,28 +143,20 @@ const char* boot_proto_memmap_type_to_str(uint64_t type) {
 	switch (type) {
 		case BOOT_PROTO_MEMMAP_UNKNOWN:
 			return "Unknown";
-			break;
 		case BOOT_PROTO_MEMMAP_USABLE:
 			return "Usable";
-			break;
 		case BOOT_PROTO_MEMMAP_RESERVED:
 			return "Reserved";
-			break;
 		case BOOT_PROTO_MEMMAP_ACPI_RECLAIMABLE:
 			return "ACPI Reclaimable";
-			break;
 		case BOOT_PROTO_MEMMAP_ACPI_NVS:
 			return "ACPI NVS";
-			break;
 		case BOOT_PROTO_MEMMAP_BAD_MEMORY:
 			return "Bad Memory";
-			break;
 		case BOOT_PROTO_MEMMAP_BOOTLOADER_RECLAIMABLE:
 			return "Bootloader Reclaimable";
-			break;
 		case BOOT_PROTO_MEMMAP_KERNEL_AND_MODULES:
 			return "Kernel and Modules";
-			break;
 		case BOOT_PROTO_MEMMAP_FRAMEBUFFER:
 			return "Framebuffer";
 		default:
