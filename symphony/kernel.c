@@ -29,7 +29,7 @@ void _start(void) {
 	debug_log(LOGLEVEL_INFO, "Fetching Limine-compliant bootloader info...\n");
 	debug_log(LOGLEVEL_INFO, "Bootloader name: %s\n", boot_proto_bl_name());
 	debug_log(LOGLEVEL_INFO, "Bootloader version: %s\n", boot_proto_bl_version());
-	debug_log(LOGLEVEL_INFO, "Done fetching bootloader info.\n");
+	debug_log(LOGLEVEL_INFO, "Finished fetching bootloader info.\n");
 
 	debug_log(LOGLEVEL_INFO, "System firmware: ");
 
@@ -60,9 +60,9 @@ void _start(void) {
 			   boot_proto_memmap_type_to_str(entry.type));
 	}
 
-	pmm_init();	
+	pmm_init();
 
-	debug_printf("Init done.\n");
+	debug_log(LOGLEVEL_INFO, "Init done\n");
 
 	arch_halt();
 }
