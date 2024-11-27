@@ -23,7 +23,7 @@ static void pmm_bitmap_set(uint64_t page) {
 	bitmap[page/8] |= (0b10000000 >> (page%8));
 }
 
-// Mark page as free in the  bitmap.
+// Mark page as free in the bitmap.
 static void pmm_bitmap_clear(uint64_t page) {
 	assert(page/8 < bitmapSize, "PMM bitmap clear operation out of bounds!\n");
 
