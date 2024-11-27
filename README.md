@@ -6,7 +6,8 @@
 A simple, hobby operating system. This is a rewrite of my first OS that focuses on simplicity, portability and maintainability.
 
 ## Features
-- 64-bit OS
+- 64-bit kernel
+- Bitmap physical memory allocator
 
 ## Building and Running
 
