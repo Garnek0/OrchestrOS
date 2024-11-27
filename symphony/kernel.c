@@ -19,6 +19,9 @@
 
 // Kernel entry point
 void _start(void) {
+	if (arch_init_very_early() != 0)
+		arch_halt();
+
 	serial_init();
 
 	debug_printf("Symphony "KERNEL_VER_STRING" is starting...\n");	
@@ -60,7 +63,8 @@ void _start(void) {
 			   boot_proto_memmap_type_to_str(entry.type));
 	}
 
-	pmm_init();
+	if (pmm_init() != 0)
+		debug_panic("PMM initialization failed!\n");
 
 	debug_log(LOGLEVEL_INFO, "Init done\n");
 

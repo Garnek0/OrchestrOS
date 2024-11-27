@@ -51,6 +51,7 @@ int debug_print(const char* str) {
 	return strlen(str);
 }
 
+// Internal integer formatting function for debug_vprintf().
 static int debug_print_int(uintmax_t n, int flags, int width, int base, bool sign, bool upper) {
 	int chars = 0;
 	bool negative = (((intmax_t)n < 0) && sign) ? true : false;

@@ -16,18 +16,24 @@
 static uint8_t* bitmap;
 static size_t bitmapSize;
 
+// Mark page as allocated in the bitmap.
 static void pmm_bitmap_set(uint64_t page) {
 	assert(page/8 < bitmapSize, "PMM bitmap set operation out of bounds!\n");
 
 	bitmap[page/8] |= (0b10000000 >> (page%8));
 }
 
+// Mark page as free in the  bitmap.
 static void pmm_bitmap_clear(uint64_t page) {
 	assert(page/8 < bitmapSize, "PMM bitmap clear operation out of bounds!\n");
 
 	bitmap[page/8] &= ~((0b10000000 >> (page%8)));
 }
 
+// We dont need to track every page in the physical address space. The last
+// page that needs to be tracked by the bitmap is (generally) the last usable
+// page. Not tracking every physical page saves a lot of memory that would
+// otherwise be needed for the bitmap.
 static uint64_t pmm_bitmap_last_tracked_page() {
 	struct boot_proto_memmap_entry entry;
 
@@ -40,6 +46,7 @@ static uint64_t pmm_bitmap_last_tracked_page() {
 	return 0;
 }
 
+// Find free pages using the bitmap.
 static uint64_t pmm_find_free_pages(int pages) {
 	bool inChunk = false;
 	int pagesFoundInChunk = 0;
