@@ -74,3 +74,12 @@ inline int arch_init_full(int cpu) {
 
 	return arch_init_late(cpu);
 }
+
+/**
+ * @brief Set the kernel stack that should be used by a specific CPU when entering
+ * kernel space.
+ *
+ * @param cpu The CPU to set the kernel stack for
+ * @param stack Kernel stack pointer
+ */
+void arch_set_kernel_stack(int cpu, void* stack);

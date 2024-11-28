@@ -114,3 +114,7 @@ void arch_load_gdt(int cpu) {
 	// Load the TSS
 	asm volatile ("movw $0x28, %ax; ltr %ax;");
 }
+
+void arch_set_kernel_stack(int cpu, void* stack) {
+	tss[cpu].rsp[0] = (uint64_t)stack;	
+}
