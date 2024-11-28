@@ -11,14 +11,17 @@
 
 #include <symphony/arch/arch.h>
 
-int arch_init_very_early(void) {
+int arch_init_very_early(int cpu) {
+	(void)cpu;
 	return 0;
 }
 
-int arch_init_early(void) {
+int arch_init_early(int cpu) {
+	(void)cpu;
 	return 0;
 }
 
-int arch_init_late(void) {
+int arch_init_late(int cpu) {
+	(void)cpu;
 	return 0;
 }

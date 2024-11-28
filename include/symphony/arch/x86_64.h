@@ -63,3 +63,9 @@ void arch_outl(uint32_t port, uint32_t data);
  */
 uint32_t arch_inl(uint32_t port);
 
+/**
+ * @brief Load a Symphony-compatible Global Descriptor Table.
+ *
+ * @param cpu The CPU calling this function.
+ */
+void arch_load_gdt(int cpu);

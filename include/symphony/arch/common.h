@@ -22,9 +22,11 @@ void arch_halt(void);
  * called when the kernel is loaded, and therefore none of the kernel
  * subsystems are initialized.
  *
+ * @param cpu The CPU calling this function
+ *
  * @return 0 on success, negative error value on error
  */
-int arch_init_very_early(void);
+int arch_init_very_early(int cpu);
 
 /**
  * @brief Initialize current processor (early stage).
@@ -34,35 +36,41 @@ int arch_init_very_early(void);
  * set up when called and therefore it should use only the features of the 
  * aformentioned components.
  *
+ * @param cpu The CPU calling this function
+ *
  * @return 0 on success, negative error value on error
  */
-int arch_init_early(void);
+int arch_init_early(int cpu);
 
 /**
  * @brief Initialize current processor (late stage).
  *
+ * @param cpu The CPU calling this function
+ *
  * @return 0 on success, negative error value on error
  */
-int arch_init_late(void);
+int arch_init_late(int cpu);
 
 /**
  * @brief Initialize current processor (very early, early and late stages, in
  * this order).
  *
+ * @param cpu The CPU calling this function
+ *
  * @return 0 on success, negative error value on error
  */
-inline int arch_init_full(void) {
+inline int arch_init_full(int cpu) {
 	int status;
 
-	status = arch_init_very_early();
+	status = arch_init_very_early(cpu);
 
 	if (status != 0)
 		return status;
 
-	status = arch_init_early();
+	status = arch_init_early(cpu);
 
 	if (status != 0)
 		return status;
 
-	return arch_init_late();
+	return arch_init_late(cpu);
 }

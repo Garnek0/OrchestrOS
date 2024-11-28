@@ -19,7 +19,7 @@
 
 // Kernel entry point
 void _start(void) {
-	if (arch_init_very_early() != 0)
+	if (arch_init_very_early(0) != 0)
 		arch_halt();
 
 	serial_init();

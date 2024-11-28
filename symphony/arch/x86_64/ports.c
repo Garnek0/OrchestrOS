@@ -9,7 +9,7 @@
  * x86 port I/O helpers.
  */
 
-#include <symphony/arch/x86_64.h>
+#include <symphony/arch/arch.h>
 
 void arch_outb(uint32_t port, uint8_t data) {
 	asm volatile("outb %b0, %w1" : : "a" (data), "Nd" (port));
