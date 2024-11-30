@@ -92,10 +92,17 @@ int pmm_free(void* base, int pages);
 int vmm_init(void);
 
 /**
- * @brief Alias of arch_vmm_new().
+ * @brief Alias of arch_vmm_new_pt().
  */
-inline void* vmm_new(void) {
-	return arch_vmm_new();
+inline void* vmm_new_pt(void) {
+	return arch_vmm_new_pt();
+}
+
+/**
+ * @brief Alias of arch_vmm_destroy_pt().
+ */
+inline void vmm_destroy_pt(void* pageTable) {
+	arch_vmm_destroy_pt(pageTable);
 }
 
 /**
@@ -136,3 +143,10 @@ inline void vmm_set_flags(void* pageTable, uint64_t virtAddr, int flags) {
  * @param flags VMM flags 
  */
 void vmm_map_range(void* pageTable, uint64_t physAddr, uint64_t virtAddr, size_t size, int flags);
+
+/**
+ * @brief Fetch kernel top-level page table.
+ *
+ * @return Pointer to the kernel top-level page table
+ */
+void* vmm_kernel_pt(void);

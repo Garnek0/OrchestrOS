@@ -25,8 +25,14 @@ void vmm_map_range(void* pageTable, uint64_t physAddr, uint64_t virtAddr, size_t
 		vmm_map(pageTable, physAddr + i, virtAddr + i, flags);
 }
 
+void* vmm_kernel_pt(void) {
+	assert(kernelPT != NULL, "Attempt to fetch root kernel page table before VMM initialization!\n");
+
+	return kernelPT;
+}
+
 int vmm_init(void) {
-	kernelPT = vmm_new();
+	kernelPT = vmm_new_pt();
 
 	struct boot_proto_memmap_entry entry;
 

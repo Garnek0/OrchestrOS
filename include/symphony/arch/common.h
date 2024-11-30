@@ -91,7 +91,14 @@ void arch_set_kernel_stack(int cpu, void* stack);
  *
  * @return Pointer to the newly allocated top-level page table
  */
-void* arch_vmm_new(void);
+void* arch_vmm_new_pt(void);
+
+/**
+ * @brief Free top-level page table and all sub-page tables.
+ *
+ * @param pageTable Top-level page table to be destroyed.
+ */
+void arch_vmm_destroy_pt(void* pageTable);
 
 /**
  * @brief Perform an address space switch on the current CPU.
