@@ -52,7 +52,7 @@
 #define PAGE_SIZE 4096
 
 /**
- * @brief Initialize physical memory manager.
+ * @brief Initialize the physical memory manager.
  *
  * @return 0 on success, negative error value on error.
  */
@@ -85,7 +85,7 @@ void* pmm_alloc(int pages);
 int pmm_free(void* base, int pages);
 
 /**
- * @brief Initialize virtual memory manager.
+ * @brief Initialize the virtual memory manager.
  *
  * @return 0 on success, negative error value on error.
  */
