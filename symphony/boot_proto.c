@@ -55,6 +55,13 @@ static volatile struct limine_kernel_address_request kernelAddressRequest = {
     .revision = 0
 };
 
+// Kernel File Request
+__attribute__((used, section(".limine_requests")))
+static volatile struct limine_kernel_file_request kernelFileRequest = {
+    .id = LIMINE_KERNEL_FILE_REQUEST,
+    .revision = 0
+};
+
 __attribute__((used, section(".limine_requests_end")))
 static volatile LIMINE_REQUESTS_END_MARKER;
 
@@ -170,4 +177,8 @@ uint64_t boot_proto_kernel_physical_base(void) {
 
 uint64_t boot_proto_kernel_virtual_base(void) {
 	return kernelAddressRequest.response->virtual_base;
+}
+
+uint64_t boot_proto_kernel_size(void) {
+	return kernelFileRequest.response->kernel_file->size;
 }

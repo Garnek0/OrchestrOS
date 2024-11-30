@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <symphony/types.h>
+
 /**
  * @brief Halt the CPU.
  */
@@ -83,3 +85,44 @@ inline int arch_init_full(int cpu) {
  * @param stack Kernel stack pointer
  */
 void arch_set_kernel_stack(int cpu, void* stack);
+
+/**
+ * @brief Allocate new, empty top-level page table.
+ *
+ * @return Pointer to the newly allocated top-level page table
+ */
+void* arch_vmm_new(void);
+
+/**
+ * @brief Perform an address space switch on the current CPU.
+ *
+ * @param pageTable Top-level page table to be used for the switch.
+ */
+void arch_vmm_switch(void* pageTable);
+
+/**
+ * @brief Map a physical page to a virtual page.
+ *
+ * @param pageTable Top-level page table, the context of this operation
+ * @param physAddr Physical address, preferably page-aligned
+ * @param virtAddr Virtual address, preferably page-aligned
+ * @param flags VMM flags 
+ */
+void arch_vmm_map(void* pageTable, uint64_t physAddr, uint64_t virtAddr, int flags);
+
+/**
+ * @brief Unmap a virtual page.
+ *
+ * @param pageTable Top-level page table, the context of this operation
+ * @param virtAddr Virtual address, preferably page-aligned
+ */
+void arch_vmm_unmap(void* pageTable, uint64_t virtAddr);
+
+/**
+ * @brief Set virtual page flags.
+ *
+ * @param pageTable Top-level page table, the context of this operation
+ * @param virtAddr Virtual address, preferably page-aligned
+ * @param flags VMM flags
+ */
+void arch_vmm_set_flags(void* pageTable, uint64_t virtAddr, int flags);

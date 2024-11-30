@@ -10,7 +10,30 @@
 #pragma once
 
 #include <symphony/arch/common.h>
-#include <symphony/types.h>
+
+/** @brief x86 page table entry. */
+struct page_table_entry {
+	/**@{*/
+	/** @brief Page table entry field documented in the Intel SDM */
+    bool present : 1;
+    bool readWrite : 1;
+    bool userSupervisor : 1;
+    bool writeThrough : 1;
+    bool cacheDisable : 1;
+    bool accessed : 1;
+    bool avl0 : 1;
+    bool pageSize : 1;
+    uint8_t avl1 : 4;
+    uint64_t addr : 51;
+    bool nx : 1;
+	/**@}*/
+} __attribute__((packed));
+
+/** @brief x86 page table. Consists of 512 entries. */
+struct page_table {
+	/** @brief 512 page table entries */
+    struct page_table_entry entries[512];
+} __attribute__((packed)) __attribute__((aligned(0x1000)));
 
 /**
  * @brief Write byte value to x86 I/O port.

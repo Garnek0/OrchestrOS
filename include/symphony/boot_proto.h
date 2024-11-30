@@ -129,3 +129,10 @@ uint64_t boot_proto_kernel_physical_base(void);
  * @return Kernel virtual base address
  */
 uint64_t boot_proto_kernel_virtual_base(void);
+
+/**
+ * @brief Get kernel file size.
+ *
+ * @return Kernel file size
+ */
+uint64_t boot_proto_kernel_size(void);
