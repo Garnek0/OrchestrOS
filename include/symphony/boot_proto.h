@@ -112,7 +112,7 @@ struct boot_proto_memmap_entry boot_proto_memmap_entry_get(uint64_t i);
  *
  * @param type The memory map entry type as a 64-bit integer
  *
- * @return Human-readable ASCII string of the memory map entry type.
+ * @return Human-readable ASCII string of the memory map entry type
  */
 const char* boot_proto_memmap_type_to_str(uint64_t type);
 
