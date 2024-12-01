@@ -69,6 +69,9 @@ void _start(void) {
 	if (vmm_init() != 0)
 		debug_panic("VMM initialization failed!\n");
 
+	if(kheap_init() != 0)
+		debug_panic("Kernel heap initialization failed\n");
+
 	debug_log(LOGLEVEL_INFO, "Init done\n");
 
 	arch_halt();

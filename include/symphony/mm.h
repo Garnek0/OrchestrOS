@@ -52,6 +52,11 @@
 #define PAGE_SIZE 4096
 
 /**
+ * @brief Initial kernel heap size in pages.
+ */
+#define KHEAP_INIT_PAGES 16
+
+/**
  * @brief Initialize the physical memory manager.
  *
  * @return 0 on success, negative error value on error.
@@ -150,3 +155,29 @@ void vmm_map_range(void* pageTable, uint64_t physAddr, uint64_t virtAddr, size_t
  * @return Pointer to the kernel top-level page table
  */
 void* vmm_kernel_pt(void);
+
+/**
+ * @brief Initialize kernel heap.
+ *
+ * @return 0 on success, negative error value on error.
+ */
+int kheap_init();
+
+/**
+ * @brief Allocate a chunk of memory.
+ *
+ * @param size The memory chunk size
+ *
+ * @return Pointer to the newly allocated memory chunk
+ */
+void* kmalloc(size_t size);
+
+/**
+ * @brief Free a previously allocated chunk of memory.
+ *
+ * @param ptr Pointer to the memory chunk to free
+ *
+ * @warning This function, just like pmm_free(), can corrupt the memory if used
+ * incorrectly. It also poisons the blocks after deallocating them.
+ */
+void kfree(void* ptr);

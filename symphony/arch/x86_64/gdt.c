@@ -57,9 +57,9 @@ struct tss {
 	uint16_t iomapBase;
 } __attribute__((packed));
 
-struct gdt gdt[1];
-struct tss tss[1];
-struct gdtr gdtr[1];
+static struct gdt gdt[1];
+static struct tss tss[1];
+static struct gdtr gdtr[1];
 
 // Set access and flags of a GDT entry. Limit and base are ignored on
 // 64-bit x86 and are therefore set to 0.
