@@ -17,6 +17,8 @@ int arch_init_very_early(int cpu) {
 }
 
 int arch_init_early(int cpu) {
+	arch_interrupt_init();
+
 	(void)cpu;
 	return 0;
 }

@@ -66,11 +66,17 @@ void _start(void) {
 	if (pmm_init() != 0)
 		debug_panic("PMM initialization failed!\n");
 
+	if (arch_init_early(0) != 0)
+		debug_panic("Early arch initialization failed!\n");
+
 	if (vmm_init() != 0)
 		debug_panic("VMM initialization failed!\n");
 
 	if(kheap_init() != 0)
 		debug_panic("Kernel heap initialization failed\n");
+
+	if (arch_init_late(0) != 0)
+		debug_panic("Late arch initialization failed!\n");
 
 	debug_log(LOGLEVEL_INFO, "Init done\n");
 
