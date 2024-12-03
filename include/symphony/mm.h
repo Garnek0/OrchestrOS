@@ -173,6 +173,15 @@ int kheap_init();
 void* kmalloc(size_t size);
 
 /**
+ * @brief Allocate and zero out a chunk of memory.
+ *
+ * @param size The memory chunk size
+ *
+ * @return Pointer to the newly allocated and zeroed out memory chunk
+ */
+void* kzalloc(size_t size);
+
+/**
  * @brief Free a previously allocated chunk of memory.
  *
  * @param ptr Pointer to the memory chunk to free

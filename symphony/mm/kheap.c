@@ -106,6 +106,13 @@ void* kmalloc(size_t size) {
 	return kmalloc(size);
 }
 
+void* kzalloc(size_t size) {
+	void* ptr = kmalloc(size);
+	memset(ptr, 0, size);
+
+	return ptr;
+}
+
 void kfree(void* ptr) {
 	if (ptr == NULL)
 		return;
