@@ -35,15 +35,25 @@ struct page_table {
 	struct page_table_entry entries[512];
 } __attribute__((packed)) __attribute__((aligned(0x1000)));
 
+/** @brief x86_64 registers. This struct is mostly used for interrupt stuff. */
 struct regs {
+	/**@{*/
+	/** @brief x86 register. */
 	uint64_t ds;
 	uint64_t r15, r14, r13, r12, r11, r10, r9, r8;
 	uint64_t rdi, rsi, rbp, rbx, rdx, rcx, rax;
+	/**@}*/
 
-	// For interrupts
-	uint64_t intn, errCode;
+	/** @brief Interrupt number. */
+	uint64_t intn;
 
+	/** @brief Exception error code. */
+	uint64_t errCode;
+
+	/**@{*/
+	/** @brief x86 stack frame register. */
 	uint64_t rip, cs, rflags, rsp, ss;
+	/**@}*/
 };
 
 /**
